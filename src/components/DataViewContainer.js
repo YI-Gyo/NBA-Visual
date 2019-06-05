@@ -1,52 +1,60 @@
 import React from 'react';
 import { ShotChart } from './ShotChart';
-import { Slider, InputNumber, Row, Col, Radio, Switch } from 'antd';
+import { Radio, Switch } from 'antd';
+import { CountSlider } from "./CountSlider";
 
 const RadioGroup = Radio.Group;
 
 export class DataViewContainer extends React.Component {
 	state = {
-		inputValue: 1,
+		minCount: 2,
+		displayToolTips: true,
+		chartType: "hexbin",
 	};
 
-	onChange = value => {
+
+	onMinCountChange = (minCount) => {
 		this.setState({
-			inputValue: value,
+			minCount
 		});
-	};
+	}
+
+	onChartTypeChange = (e) => {
+		this.setState({
+			chartType: e.target.value
+		});
+	}
+
+	onTooltipChange = (displayToolTips) => {
+		this.setState({
+			displayToolTips,
+		});
+	}
+
 
 	render() {
-		const { inputValue } = this.state;
+		const {
+			minCount,
+			displayToolTips,
+			chartType,
+		} = this.state;
+
 		return (
 			<div className={'short-chart'}>
-				<ShotChart playerId={this.props.playerId} minCount={2} displayTooTips={true} chartType={"hexbin"} />
+				<ShotChart
+					playerId={this.props.playerId}
+					minCount={minCount}
+					displayToolTips={displayToolTips}
+					chartType={chartType} />
 
-				<Row>
-					<Col span={12}>
-						<Slider
-							min={1}
-							max={20}
-							onChange={this.onChange}
-							value={typeof inputValue === 'number' ? inputValue : 0}
-						/>
-					</Col>
-					<Col span={4}>
-						<InputNumber
-							min={1}
-							max={20}
-							style={{ marginLeft: 16 }}
-							value={inputValue}
-							onChange={this.onChange}
-						/>
-					</Col>
-				</Row>
+				<CountSlider onMinCountChange={this.onMinCountChange}/>
 
-				<RadioGroup>
+				<RadioGroup value={chartType} onChange={this.onChartTypeChange}>
 					<Radio value={'hexbin'}>Hexbin</Radio>
 					<Radio value={'scatter'}>Scatter</Radio>
 				</RadioGroup>
 
-				<Switch
+				<Switch onChange={this.onTooltipChange}
 					checkedChildren="on"
 					unCheckedChildren="off"
 					defaultChecked
