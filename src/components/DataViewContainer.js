@@ -40,6 +40,7 @@ export class DataViewContainer extends React.Component {
 			chartType,
 		} = this.state;
 
+		//console.log("---------", minCount);
 		return (
 			<div className={'data-view'}>
 				<ShotChart
@@ -49,21 +50,27 @@ export class DataViewContainer extends React.Component {
 					chartType={chartType}
 				/>
 
-				<Row>
-					<Col span={2} offset={3} className="filter-label">Shots:</Col>
-					<Col offset={'4'} >
-						<CountSlider onMinCountChange={_.debounce(this.onMinCountChange, 500)}/>
-					</Col>
-				</Row>
+				{
+					chartType === "hexbin" ? (
+						<Row>
+							<Col span={2} offset={3} className="filter-label">Shots:</Col>
+							<Col offset={'4'} >
+								<CountSlider
+									value={minCount}
+									onMinCountChange={_.debounce(this.onMinCountChange, 500)}/>
+							</Col>
+						</Row>
+					) : null
+				}
 
 				<Row>
-					<Col span="9" offset="6" >
+					<Col span={9} offset={6} >
 						<RadioGroup value={chartType} onChange={this.onChartTypeChange}>
 							<Radio value={'hexbin'}>Hexbin</Radio>
 							<Radio value={'scatter'}>Scatter</Radio>
 						</RadioGroup>
 					</Col>
-					<Col span={'3'}>
+					<Col span={3}>
 						<Switch onChange={this.onTooltipChange}
 								checkedChildren="on"
 								unCheckedChildren="off"
