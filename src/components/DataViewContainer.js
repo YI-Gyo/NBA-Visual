@@ -54,7 +54,7 @@ export class DataViewContainer extends React.Component {
 					chartType === "hexbin" ? (
 						<Row>
 							<Col span={2} offset={3} className="filter-label">Shots:</Col>
-							<Col offset={'4'} >
+							<Col offset={4} >
 								<CountSlider
 									value={minCount}
 									onMinCountChange={_.debounce(this.onMinCountChange, 500)}/>
