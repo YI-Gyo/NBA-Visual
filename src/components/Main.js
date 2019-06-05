@@ -1,16 +1,17 @@
 import React from 'react';
-import { ShotChart } from './ShotChart';
 import { Profile } from './Profile';
 import nba from 'nba';
+import { DataViewContainer } from "./DataViewContainer";
 
 export class Main extends React.Component {
 	state = {
-		playerId: nba.findPlayer('Lebron James').playerId,
-		playerInfo: {},
+		playerInfo: {
+			playerId: nba.findPlayer('Lebron James').playerId,
+		},
 	}
 
 	componentDidMount() {
-		nba.stats.playerInfo({ PlayerID: this.state.playerId })
+		nba.stats.playerInfo({ PlayerID: this.state.playerInfo.playerId })
 			.then((info) => {
 				const playerInfo = Object.assign(info.commonPlayerInfo[0], info.playerHeadlineStats[0]);
 				console.log('playerInfo', playerInfo);
@@ -22,7 +23,7 @@ export class Main extends React.Component {
 		return (
 			<div className="main">
 				<Profile playerInfo={this.state.playerInfo} />
-				<ShotChart playerId={this.state.playerId} />
+				<DataViewContainer playerId={this.state.playerInfo.playerId} />
 			</div>
 		);
 	}
